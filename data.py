@@ -5,7 +5,7 @@ from torchvision.transforms import *
 
 class Flowers(Dataset):
     def __init__(self, 
-                 path = '/home/qwq/Datasets/flowers',
+                 path = '/home/zhangjiahao/flowers',
                  div = 'train',
                  transforms = None):
         self.path = path
@@ -29,7 +29,7 @@ class Flowers(Dataset):
                 )
             )
         label = self.labels[
-                    int(self.files[idx][6:11])
+                    int(self.files[idx][6:11]) - 1
                 ]
         return img, label
     
