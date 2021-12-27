@@ -16,19 +16,19 @@ train_data = Flowers(div = 'train', transforms = Compose([RandomResizedCrop((224
 val_data, test_data = Flowers(div = 'val'), Flowers(div = 'test')
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
-model = poolformer_s12(mixer_type='meta')
+model = poolformer_s12(mixer_type='attention')
 model.fc = nn.Linear(512, 102)
-model.load_state_dict(torch.load('ckpts/epoch350_acc655.pth'))
 model = model.to(device)
-with open('ckpts/derived_arch.pkl', 'rb') as f:
-    arch = pkl.load(f)
+#with open('ckpts/derived_arch.pkl', 'rb') as f:
+#    arch = pkl.load(f)
+arch = None
 
-n_epochs = 250
+n_epochs = 600
 observed_epochs = set([i for i in range(n_epochs) if (i + 1) % 10 == 0])
 
 def train():
     loader = DataLoader(train_data, batch_size=128, shuffle=True, pin_memory=True, num_workers=4)
-    optimizer = optim.AdamW(model.parameters(), lr=1e-4, weight_decay = 1e-4)
+    optimizer = optim.AdamW(model.parameters(), lr=1e-3, weight_decay = 1e-4)
     scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=50, gamma=0.85)
     criterion = nn.CrossEntropyLoss().to(device)
 

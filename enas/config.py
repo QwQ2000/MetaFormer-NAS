@@ -21,7 +21,7 @@ net_arg.add_argument('--network_type', type=str, choices=['rnn', 'cnn'], default
 
 # Controller
 #net_arg.add_argument('--num_blocks', type=int, default=12)
-net_arg.add_argument('--num_blocks', type=int, default=4)
+net_arg.add_argument('--num_blocks', type=int, default=7)
 net_arg.add_argument('--tie_weights', type=str2bool, default=True)
 #net_arg.add_argument('--controller_hid', type=int, default=100)
 net_arg.add_argument('--controller_hid', type=int, default=64)

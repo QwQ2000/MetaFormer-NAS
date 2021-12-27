@@ -136,7 +136,7 @@ class PoolFormerBlock(nn.Module):
         elif mixer_type == 'attention':
             self.token_mixer = Attention(dim=dim, fmap_size=(H, W), heads=4, dim_head = dim // 4)
         elif mixer_type == 'meta':
-            self.token_mixer = MetaMixer(dim=dim, fmap_size=(H, W), num_nodes=4)
+            self.token_mixer = MetaMixer(dim=dim, fmap_size=(H, W), num_nodes=7)
         else:
             raise NotImplementedError("mixer_type must in ['pooling', 'mlp', 'attention', 'meta']")
 

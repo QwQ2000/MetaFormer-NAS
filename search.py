@@ -11,6 +11,7 @@ from enas.config import get_args
 from enas.utils import get_variable
 import random
 import pickle as pkl
+import time 
 
 train_data = Flowers(div = 'train', transforms = Compose([RandomResizedCrop((224,224)),
                                                           RandomHorizontalFlip(),
@@ -97,7 +98,7 @@ def train_controller():
         torch.nn.utils.clip_grad_norm(model.parameters(), 0.1)
         optimizer.step()
 
-        if (step + 1) % 10 == 0:
+        if (step + 1) % 25 == 0:
             print('Step:{} mean_batch_acc:{} policy_loss:{}'.format(step + 1, np.mean(batch_accs), loss))
 
 search_epoch = 100
@@ -143,7 +144,9 @@ def setup_seed(seed):
 
 if __name__ == '__main__':
     setup_seed(42)
+    t0 = time.time()
     train()
+    print('Time:{}'.format(time.time() - t0))
     arch = derive_arch()
     with open('ckpts/derived_arch.pkl', 'wb') as f:
         pkl.dump(arch, f)

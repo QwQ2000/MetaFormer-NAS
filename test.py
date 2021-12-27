@@ -6,6 +6,7 @@ from tqdm import tqdm
 import numpy as np
 import torch
 import pickle as pkl
+from torchsummary import summary
 
 torch.backends.cudnn.benchmark = True
 
@@ -13,10 +14,10 @@ device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
 test_data = Flowers(div = 'test')
 
-model = poolformer_s12(mixer_type='pooling')
+model = poolformer_s12(mixer_type='attention')
 model.fc = nn.Linear(512, 102)
-#model.load_state_dict(torch.load('ckpts/pool_epoch590_acc699.pth'))
-with open('ckpts/derived_arch.pkl', 'rb') as f:
+model.load_state_dict(torch.load('ckpts/mhsa_epoch580_acc665.pth'))
+with open('ckpts/derived_arch_7node.pkl', 'rb') as f:
     arch = pkl.load(f)
 model = model.to(device)
 
@@ -38,4 +39,5 @@ def eval_model(arch=None, div = 'val'):
     return np.sum(np.array(gts) == np.array(preds)) / len(gts)
 
 if __name__ == '__main__':
+    #summary(model, input_size=(3, 224, 224), batch_size=-1)
     print(eval_model(arch=arch, div = 'test'))
